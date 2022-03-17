@@ -95,42 +95,42 @@
     CGSize max = CGSizeMake(width, [UIScreen mainScreen].bounds.size.height);
     return ASSizeRangeMake(min, max);
 }
+//
+//- (BOOL)shouldBatchFetchForTableNode:(ASTableNode *)tableNode {
+//    return YES;
+//}
 
-- (BOOL)shouldBatchFetchForTableNode:(ASTableNode *)tableNode {
-    return YES;
-}
-
-- (void)tableNode:(ASTableNode *)tableNode willBeginBatchFetchWithContext:(ASBatchContext *)context {
-    //1
-    [self retrieveNextPageWithCompletion:^(NSArray *animals) {
-        //2
-        [self insertNewRowsInTableNode:animals];
-        //3
-        [context completeBatchFetching:YES];
-    }];
-}
+//- (void)tableNode:(ASTableNode *)tableNode willBeginBatchFetchWithContext:(ASBatchContext *)context {
+//    //1
+//    [self retrieveNextPageWithCompletion:^(NSArray *animals) {
+//        //2
+//        [self insertNewRowsInTableNode:animals];
+//        //3
+//        [context completeBatchFetching:YES];
+//    }];
+//}
 
 #pragma mark -helpers
-- (void)retrieveNextPageWithCompletion:(void (^)(NSArray *))block {
-    NSArray *moreAnimals = [[NSArray alloc] initWithArray:[self.animals subarrayWithRange:NSMakeRange(0, 5)] copyItems:NO];
-    
-    // Important: this block must run on the main thread
-    dispatch_async(dispatch_get_main_queue(), ^{
-        block(moreAnimals);
-    });
-}
-
-- (void)insertNewRowsInTableNode:(NSArray *)newAnimals {
-    NSInteger section = 0;
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    
-    NSUInteger newTotalNumberOfPhotos = self.animals.count + newAnimals.count;
-    for (NSUInteger row = self.animals.count; row < newTotalNumberOfPhotos; row++) {
-        NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:section];
-        [indexPaths addObject:path];
-    }
-    
-    [self.animals addObjectsFromArray:newAnimals];
-    [self.tableNode insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-}
+//- (void)retrieveNextPageWithCompletion:(void (^)(NSArray *))block {
+//    NSArray *moreAnimals = [[NSArray alloc] initWithArray:[self.animals subarrayWithRange:NSMakeRange(0, 5)] copyItems:NO];
+//
+//    // Important: this block must run on the main thread
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        block(moreAnimals);
+//    });
+//}
+//
+//- (void)insertNewRowsInTableNode:(NSArray *)newAnimals {
+//    NSInteger section = 0;
+//    NSMutableArray *indexPaths = [NSMutableArray array];
+//
+//    NSUInteger newTotalNumberOfPhotos = self.animals.count + newAnimals.count;
+//    for (NSUInteger row = self.animals.count; row < newTotalNumberOfPhotos; row++) {
+//        NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:section];
+//        [indexPaths addObject:path];
+//    }
+//
+//    [self.animals addObjectsFromArray:newAnimals];
+//    [self.tableNode insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+//}
 @end
